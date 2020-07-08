@@ -12,11 +12,17 @@
           </el-col>
           <el-col :span="6" :offset="10">
             <div class="grid-content bg-purple">
+              <!-- <el-link
+                style="float:right;margin-right:80px;color:#fff"
+                :underline="false"
+                type="primary"
+              >登录</el-link>-->
               <el-link
                 style="float:right;margin-right:80px;color:#fff"
                 :underline="false"
                 type="primary"
-              >登录</el-link>
+                @click="handPersonal"
+              >个人中心</el-link>
             </div>
           </el-col>
         </el-row>
@@ -232,12 +238,12 @@
       >版权所有：中国科学院计算机网络信息中心·大数据部 Copyright© 1995-2020 备案序号：京ICP备09112257号-34</div>
     </el-footer>
     <details-popup v-if="dialogVisible" ref="popup"></details-popup>
+    <personal v-if="logVisible" ref="personal"></personal>
   </el-container>
-  <!-- 详情弹窗 -->
-  <!-- <details-popup ref="detailsPopup"></details-popup> -->
 </template>
 <script>
 import DetailsPopup from "../../components/popup";
+import Personal from "../../components/personal";
 export default {
   name: "",
   data() {
@@ -253,11 +259,13 @@ export default {
         "GH1498",
         "GH1498"
       ],
-      dialogVisible: false
+      dialogVisible: false,
+      logVisible: false
     };
   },
   components: {
-    DetailsPopup
+    DetailsPopup,
+    Personal
   },
   computed: {},
   beforeMount() {},
@@ -271,6 +279,13 @@ export default {
       this.dialogVisible = true;
       this.$nextTick(() => {
         this.$refs.popup.init();
+      });
+    },
+    //个人中心
+    handPersonal() {
+      this.logVisible = true;
+      this.$nextTick(() => {
+        this.$refs.personal.init();
       });
     }
   },

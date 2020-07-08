@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialogTableVisible" width="1300px">
+  <el-dialog :visible.sync="dialogTableVisible" width="70%">
     <el-row :gutter="20">
       <!-- 左侧 -->
       <el-col :span="16" style="margin-bottom:100px">
