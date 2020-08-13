@@ -1,10 +1,11 @@
 <template>
   <div style="padding:26px">
-    <tr>
+    <tr v-show="dataList.typicalOrganization">
       <td style="width:80px;line-height:70px;text-align:left">典型组织 :</td>
       <td
         style="width:600px"
-      >Lorem ipsue euismod bibendum laoreet. Proin gravida dolor sit amet lacus a dolor sit amet lacus</td>
+        v-html="dataList.typicalOrganization"
+      ></td>
     </tr>
   </div>
 </template>
@@ -12,13 +13,21 @@
 export default {
   name: "",
   data() {
-    return {};
+    return {
+      dataList:{}
+
+    };
   },
   components: {},
   computed: {},
   beforeMount() {},
   mounted() {},
-  methods: {},
+  methods: {
+    init(data){
+      this.dataList = data
+    }
+
+  },
   watch: {}
 };
 </script>

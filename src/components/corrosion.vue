@@ -1,10 +1,16 @@
 <template>
   <div style="padding:26px">
-    <tr>
+    <tr v-show="dataList.meltingProcess">
       <td style="width:80px;line-height:70px;text-align:left">防腐蚀性 :</td>
       <td
         style="width:600px"
-      >Lorem ipsue euismod bibendum laoreet. Proin gravida dolor sit amet lacus a dolor sit amet lacus</td>
+      >{{dataList.meltingProcess}}</td>
+    </tr>
+    <tr v-show="dataList.antioxidantPerformance">
+      <td style="width:80px;line-height:70px;text-align:left">抗氧化性能 :</td>
+      <td
+        style="width:600px"
+      > {{dataList.antioxidantPerformance}}</td>
     </tr>
   </div>
 </template>
@@ -12,13 +18,19 @@
 export default {
   name: "",
   data() {
-    return {};
+    return {
+      dataList :{}
+    };
   },
   components: {},
   computed: {},
   beforeMount() {},
   mounted() {},
-  methods: {},
+  methods: {
+    init(data){
+      this.dataList = data
+    }
+  },
   watch: {}
 };
 </script>

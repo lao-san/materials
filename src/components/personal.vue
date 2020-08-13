@@ -4,12 +4,17 @@
       <!-- 左侧 -->
       <el-col :span="7" class="person_left">
         <div class="grid-content bg-purple" style="border-right:1px soild #eee">
-          <el-avatar :size="200">张</el-avatar>
-          <div>388899@163.net</div>
-          <div>登录地址 : xxxxxxx</div>
+          <el-avatar :size="200">{{userData.username |newUser}}</el-avatar>
+          <div>{{userData.mobile}}</div>
+          <div>
+            登录IP地址 :
+            <br />
+            {{userData.loginIp}}
+          </div>
           <div>
             最近登录时间:
-            xxxx:xx:xx:x
+            <br />
+            {{userData.loginTime}}
           </div>
         </div>
       </el-col>
@@ -22,7 +27,7 @@
                 <div class="grid-content bg-purple nav" style="line-height:80px;">
                   <i class="el-icon-refresh" style="margin-left:40px"></i>
                   <div>
-                    <p>10</p>
+                    <p>{{recentlist.length}}</p>
                     <p>最近访问</p>
                   </div>
                 </div>
@@ -31,7 +36,7 @@
                 <div class="grid-content bg-purple nav" style="line-height:80px;border:none">
                   <i class="el-icon-star-on" style="margin-left:40px"></i>
                   <div>
-                    <p>10</p>
+                    <p>{{totalCount}}</p>
                     <p>我的收藏</p>
                   </div>
                 </div>
@@ -45,12 +50,12 @@
                 <hr />
               </div>
               <div class="content_item">
-                <a>
-                  <h3 style="margin-bottom:20px">0f3d4</h3>
+                <a v-for="item in recentlist" :key="item.id" @click.stop="handDetails(item.did)">
+                  <h3 style="margin-bottom:20px">{{item.content.code}}</h3>
                   <el-row :gutter="20">
                     <el-col :span="6">
                       <div class="grid-content bg-purple">
-                        <div style="width: 200px; height: 120px;overflow:hidden">
+                        <div style=" height: 120px;overflow:hidden">
                           <img src="../assets/img/bg.jpg" alt style="width: 100%; height: 100%" />
                         </div>
                       </div>
@@ -58,14 +63,10 @@
                     <el-col :span="18">
                       <div class="grid-content bg-purple">
                         <div style="margin-bottom:10px">
-                          <el-tag>123</el-tag>
-                          <el-tag>123</el-tag>
-                          <el-tag>123</el-tag>
+                          <el-tag v-for="(item,index) in item.content.keyword" :key="index">{{item}}</el-tag>
                         </div>
-                        <div
-                          class="text_hidden"
-                        >同原生 object-fit。可通过fit确定图片如何适应到容器框，可通过fit确定图片如何适应到容器框，通过fit确定图片如何适应到容器框通过fit确定图片如何适应到容器框可通过fit确定图片如何适应到容器框，可通过fit确定图片如何适应到容器框同原生 object-fit。可通过fit确定图片如何适应到容器框，同原生 object-fit。</div>
-                        <div style="float:right;" class>2020-10-1</div>
+                        <div class="text_hidden" style="height:95px">{{item.content.summary}}</div>
+                        <div style="float:right;" class>{{item.content.createTime}}</div>
                       </div>
                     </el-col>
                   </el-row>
@@ -79,36 +80,45 @@
                 <hr />
               </div>
               <div class="content_item">
-                <a>
-                  <h3 style="margin-bottom:20px">0f3d4</h3>
+                <a v-for="item in favoritelist" :key="item.id" @click.stop="handDetails(item.did)">
+                  <h3 style="margin-bottom:20px">{{item.content.code}}</h3>
                   <el-row :gutter="20">
                     <el-col :span="6">
                       <div class="grid-content bg-purple">
-                        <el-image
-                          style="width: 200px; height: 120px"
-                          src="../../assets/img/logo.png"
-                          fit="cover"
-                        ></el-image>
+                        <div style=" height: 120px;overflow:hidden">
+                          <img src="../assets/img/bg.jpg" alt style="width: 100%; height: 100%" />
+                        </div>
                       </div>
                     </el-col>
                     <el-col :span="18">
                       <div class="grid-content bg-purple">
                         <div style="margin-bottom:10px">
-                          <el-tag>123</el-tag>
-                          <el-tag>123</el-tag>
-                          <el-tag>123</el-tag>
+                          <el-tag v-for="(item,index) in item.content.keyword" :key="index">{{item}}</el-tag>
                         </div>
-                        <div
-                          class="text_hidden"
-                        >同原生 object-fit。可通过fit确定图片如何适应到容器框，可通过fit确定图片如何适应到容器框，通过fit确定图片如何适应到容器框通过fit确定图片如何适应到容器框可通过fit确定图片如何适应到容器框，可通过fit确定图片如何适应到容器框同原生 object-fit。可通过fit确定图片如何适应到容器框，同原生 object-fit。</div>
-                        <div style="float:right;" class>2020-10-1</div>
+                        <div class="text_hidden" style="height:95px;position: relative;">
+                          {{item.content.summary}}
+                          <a
+                            href="javascript:"
+                            class="clear"
+                            @click.stop.self="clear(item.id)"
+                          >取消收藏</a>
+                        </div>
+                        <div style="float:right;" class>{{item.content.createTime}}</div>
                       </div>
                     </el-col>
                   </el-row>
                 </a>
               </div>
               <div class="text-center" style="margin-top:20px">
-                <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
+                <el-pagination
+                  background
+                  layout="total, prev, pager, next"
+                  :total="totalCount"
+                  :current-page="pageIndex"
+                  :page-size="pageSize"
+                  @size-change="sizeChangeHandle"
+                  @current-change="currentChangeHandle"
+                ></el-pagination>
               </div>
             </div>
           </div>
@@ -122,19 +132,122 @@ export default {
   name: "",
   data() {
     return {
-      dialogVisible: false
+      dialogVisible: false,
+      recentlist: [],
+      favoritelist: [],
+      userData: {},
+      pageIndex: 1,
+      pageSize: 6,
+      totalPage: 0,
+      totalCount: 0,
     };
   },
   components: {},
   computed: {},
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    this.init();
+  },
   methods: {
     init() {
       this.dialogVisible = true;
-    }
+      let token = window.sessionStorage.getItem("token");
+      // 获取用户信息
+      this.getUserData();
+      //获取最近访问
+      this.getUserRecentlist(token);
+      this.getUserFavoritelist(token);
+    },
+    // userData
+    getUserData() {
+      this.$http.get("/app/user/info", {}, (data) => {
+        if (data && data.code === 0) {
+          this.userData = data.user;
+        }
+      });
+    },
+    getUserRecentlist() {
+      this.$http.get(
+        "/app/user/recentlist",
+        {
+          page: this.page,
+          limit: this.limit,
+        },
+        (data) => {
+          if (data && data.code === 0) {
+            let list = data.list;
+            list.forEach((item) => {
+              let element = JSON.parse(item.content);
+              item.content = element;
+              if (item.content.keyword) {
+                item.content.keyword = item.content.keyword.split(",");
+              }
+            });
+            this.recentlist = list;
+          }
+        }
+      );
+    },
+    // 收藏
+    getUserFavoritelist() {
+      this.$http.get(
+        "/app/user/favoritelist",
+        {
+          page: this.pageIndex,
+          limit: this.pageSize,
+        },
+        (data) => {
+          if (data && data.code === 0) {
+            let list = data.page.list;
+
+            this.totalPage = data.page.totalPage;
+            this.totalCount = data.page.totalCount;
+            list.forEach((item) => {
+              let element = JSON.parse(item.content);
+              item.content = element;
+              item.content.keyword = item.content.keyword.split(",");
+            });
+            this.favoritelist = list;
+          }
+        }
+      );
+    },
+    // 每页数
+    sizeChangeHandle(val) {
+      this.pageSize = val;
+      this.pageIndex = 1;
+      this.init();
+    },
+    // 当前页
+    currentChangeHandle(val) {
+      this.pageIndex = val;
+
+      this.init();
+    },
+    // 跳转
+    handDetails(id) {
+      // this.$router.push({ path: `/details/${id}` });
+      this.$router.push({ name: "box", params: { id: id } });
+    },
+    // 取消收藏
+    clear(id) {
+      this.$http.post("/app/user/cancelfavorite/" + id, {}, (data) => {
+        if (data && data.code === 0) {
+          this.favoritelist.forEach((item, index) => {
+            if (id === item.id) {
+              this.favoritelist.splice(index, 1);
+            }
+          });
+        }
+      });
+    },
   },
-  watch: {}
+  filters: {
+    newUser: function (val) {
+      return val.split("")[0];
+    },
+  },
+  watch: {},
 };
 </script>
 <style scoped lang="scss">
@@ -142,7 +255,7 @@ export default {
   // border-right: 1px solid #ccc;
   text-align: center;
   .el-avatar {
-    background-color: #199ed8;
+    background-color: #ff9900;
     font-size: 80px;
   }
   div {
@@ -180,7 +293,7 @@ export default {
     .flg {
       padding: 10px 20px;
       font-weight: bold;
-      background-color: #2088e0;
+      background-color: #ff9900;
       color: #fff;
     }
     hr {
@@ -207,11 +320,23 @@ export default {
       }
       a:hover {
         color: #fff !important;
-        background-color: #2088e0;
+        background-color: #ff9900;
       }
       a:hover img {
         transform: scale(1.2);
       }
+    }
+    .clear {
+      position: absolute;
+      top: 50%;
+      right: 0%;
+      display: inline-block;
+      width: 100px;
+      height: 40px;
+      background-color: #ff9900;
+      color: #ff9900;
+      text-align: center;
+      transform: translate(-30%, -120%);
     }
   }
 }

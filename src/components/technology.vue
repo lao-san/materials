@@ -1,32 +1,28 @@
 <template>
   <div style="padding:26px">
-    <tr>
+    <tr v-show="this.dataList.processAndPerformance">
       <td style="width:140px;line-height:130px;text-align:left">成形工艺与性能 :</td>
       <td
         style="width:600px"
-      >Lorem ipsue euismod bibendum laoreet. Proin gravida dolor sit amet lacus a dolor sit amet lacus</td>
+      >{{dataList.processAndPerformance}}</td>
     </tr>
-    <tr>
+    <tr v-show="this.dataList.weldingPerformance">
       <td style="width:140px;line-height:70px;text-align:left">焊接性能 :</td>
       <td style="width:600px">
-        <el-table :data="tableData" style="width: 100%" fit label-width="center">
-          <el-table-column prop="date" label="日期" width="100" header-align="center" align="center"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="100" header-align="center" align="center"></el-table-column>
-          <el-table-column prop="address" label="地址" header-align="center" align="center"></el-table-column>
-        </el-table>
+        {{dataList.weldingPerformance}}
       </td>
     </tr>
-    <tr>
+    <tr v-show="this.dataList.heatTreatmentProcess">
       <td style="width:140px;line-height:130px;text-align:left">零件热处理工艺 :</td>
       <td
         style="width:600px"
-      >Lorem ipsue euismod bibendum laoreet. Proin gravida d euismod bibendum laoreet. Proin gravida dolor sit amet lacus a dolor sit amet lacus euismod bibendum laoreet. Proin gravida dolor sit amet lacus a dolor sit amet lacusolor sit amet lacus a dolor sit amet lacus</td>
+      >{{dataList.heatTreatmentProcess}}</td>
     </tr>
-    <tr>
-      <td style="width:140px;line-height:130px;text-align:left">切削加工与磨削性能 :</td>
+    <tr v-show="this.dataList.cuttingAndGrinding">
+      <td style="width:170px;line-height:130px;text-align:left">切削加工与磨削性能 :</td>
       <td
         style="width:600px"
-      >Lorem ipsue euismod bibendum laore euismod bibendum laoreet. Proin gravida dolor sit amet lacus a dolor sit amet lacus euismod bibendum laoreet. Proin gravida dolor sit amet lacus a dolor sit amet lacuset. Proin gravida dolor sit amet lacus a dolor sit amet lacus</td>
+      >{{dataList.cuttingAndGrinding}}</td>
     </tr>
   </div>
 </template>
@@ -35,6 +31,7 @@ export default {
   name: "",
   data() {
     return {
+      dataList:{},
       tableData: [
         {
           date: "2016-05-02",
@@ -63,7 +60,12 @@ export default {
   computed: {},
   beforeMount() {},
   mounted() {},
-  methods: {},
+  methods: {
+    init(data) {
+      this.dataList = data
+    }
+
+  },
   watch: {}
 };
 </script>

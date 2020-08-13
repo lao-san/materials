@@ -1,82 +1,44 @@
 <template>
   <div style="padding:26px">
-    <tr>
-      <td style="width:140px;line-height:70px;text-align:left">技术标准规范的性能 :</td>
-      <td style="width:600px">
-        <el-table :data="tableData" style="width: 100%" fit label-width="center">
-          <el-table-column prop="date" label="日期" width="100" header-align="center" align="center"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="100" header-align="center" align="center"></el-table-column>
-          <el-table-column prop="address" label="地址" header-align="center" align="center"></el-table-column>
-        </el-table>
-      </td>
+    <tr v-show="this.dataList.technicalStandardSpecifications">
+      <td style="width:180px;line-height:70px;text-align:left">技术标准规范的性能 :</td>
+      <td style="width:600px">{{this.dataList.technicalStandardSpecifications}}</td>
     </tr>
-    <tr>
+    <tr v-show="this.dataList.productionInspection">
       <td style="width:140px;line-height:70px;text-align:left">生产检验数据 :</td>
-      <td style="width:600px">
-        <el-table :data="tableData" style="width: 100%" fit label-width="center">
-          <el-table-column prop="date" label="日期" width="100" header-align="center" align="center"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="100" header-align="center" align="center"></el-table-column>
-          <el-table-column prop="address" label="地址" header-align="center" align="center"></el-table-column>
-        </el-table>
-      </td>
+      <td style="width:600px">{{this.dataList.productionInspection}}</td>
     </tr>
-    <tr>
+    <tr v-show="this.dataList.hardness">
       <td style="width:140px;line-height:70px;text-align:left">硬 度 :</td>
-      <td style="width:600px">
-        <el-table :data="tableData" style="width: 100%" fit label-width="center">
-          <el-table-column prop="date" label="日期" width="100" header-align="center" align="center"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="100" header-align="center" align="center"></el-table-column>
-          <el-table-column prop="address" label="地址" header-align="center" align="center"></el-table-column>
-        </el-table>
-      </td>
+      <td style="width:600px">{{this.dataList.hardness}}</td>
     </tr>
-    <tr>
+    <tr v-show="this.dataList.impactPerformance">
       <td style="width:140px;line-height:70px;text-align:left">冲击性能 :</td>
-      <td style="width:600px">
-        <el-table :data="tableData" style="width: 100%" fit label-width="center">
-          <el-table-column prop="date" label="日期" width="100" header-align="center" align="center"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="100" header-align="center" align="center"></el-table-column>
-          <el-table-column prop="address" label="地址" header-align="center" align="center"></el-table-column>
-        </el-table>
-      </td>
+      <td style="width:600px">{{this.dataList.impactPerformance}}</td>
     </tr>
   </div>
 </template>
 <script>
 export default {
   name: "",
+  props: {
+    dynamics: Object,
+  },
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        }
-      ]
+      dataList: {},
     };
   },
   components: {},
   computed: {},
   beforeMount() {},
-  mounted() {},
-  methods: {},
-  watch: {}
+  created() {},
+  methods: {
+    init(data) {
+      this.dataList = data;
+    },
+  },
+  watch: {},
 };
 </script>
 <style scoped lang="scss">
